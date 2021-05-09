@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Update lib for GNU ld scripts
+# Assumes that the binary is the first indicated in whereis,
+# with the ld script being of type "ASCII text", with the
+# first file reference after "GROUP"
+
+# depends on: whereis, sed, file, grep, basename
+
+# BSD licence
+# Mark Clements <mark.clements@ki.se> 2021-05-07
+
+# remove the -l prefix and define libname
+libname=$(echo $1 | sed 's/[-]l\(.*\)/lib\1.so/')
+# extract the *first* library in whereis
+fullname=$(whereis -b $libname | sed 's/[^ ]*[:] \([^ ]*\).*/\1/')
+if [ -e $fullname ]
+then
+    if [ "$(file -b $fullname)"="ASCII text" ]
+    then
+	# extract the *first* filename after GROUP
+	fullname2=$(grep '^GROUP' $fullname | \
+			sed 's/^GROUP *[(] *\([^ \t()]*\)[.][aso]* *.*/\1/')
+	if [ -n "$fullname2" ]
+	then
+	    # get basename and remove the lib prefix
+	    shortname=$(basename $fullname2 | sed 's/^lib\(.*\)/\1/')
+	    echo -l$shortname
+	    exit
+	fi
+    fi
+fi
+# if fails somewhere then return the origin input
+echo $1
