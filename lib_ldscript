@@ -10,25 +10,36 @@
 # BSD licence
 # Mark Clements <mark.clements@ki.se> 2021-05-07
 
-# remove the -l prefix and define libname
-libname=$(echo $1 | sed 's/[-]l\(.*\)/lib\1.so/')
-# extract the *first* library in whereis
-fullname=$(whereis -b $libname | sed 's/[^ ]*[:] \([^ ]*\).*/\1/')
-if [ -e $fullname ]
-then
-    if [ "$(file -b $fullname)"="ASCII text" ]
+shortname () {
+    echo -n $(basename $1 | sed -n 's/^lib\(.*\)[.][aso]/\1/p')' '
+}
+processArg () {
+    # remove the -l prefix and define libname
+    libname=$(echo $1 | sed -n 's/[-]l\(.*\)/lib\1.so/p')
+    if [ -n "$libname" ]
     then
-	# extract the *first* filename after GROUP
-	fullname2=$(grep '^GROUP' $fullname | \
-			sed 's/^GROUP *[(] *\([^ \t()]*\)[.][aso]* *.*/\1/')
-	if [ -n "$fullname2" ]
+	# extract the *first* library in whereis
+	fullname=$(whereis -b $libname | sed -n 's/[^ :]*[:] \([^ ]*\).*/\1/p')
+	if [ -e $fullname ]
 	then
-	    # get basename and remove the lib prefix
-	    shortname=$(basename $fullname2 | sed 's/^lib\(.*\)/\1/')
-	    echo -l$shortname
-	    exit
+	    if [ "$(file -b $fullname)"="ASCII text" ]
+	    then
+		# extract the filenames after GROUP
+		lst=( $(sed -n 's/^GROUP *[(] *\([^)]*\) *.*/\1/p' $fullname) )
+		if [ -n "$lst" ]
+		then
+		    for j in ${lst[@]}; do
+			echo -n -l$(shortname $j)' '
+		    done
+		    exit
+		fi
+	    fi
 	fi
     fi
-fi
-# if fails somewhere then return the origin input
-echo $1
+    # if fails somewhere then return the origin input
+    echo -n $1' '
+}
+args=$*
+for i in ${args[@]}; do
+    echo -n $(processArg $i)' '
+done
