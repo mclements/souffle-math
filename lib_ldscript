@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Update lib for GNU ld scripts
-# Assumes that the binary is the first indicated in whereis,
-# with the ld script being of type "ASCII text", with the
-# first file reference after "GROUP"
+# Update libs for GNU ld scripts
+# Assumes that the binary is the first indicated in whereis
+# and the references are part of "GROUP"
 
-# depends on: whereis, sed, file, grep, basename
+# depends on: whereis, sed, file, basename
 
 # BSD licence
 # Mark Clements <mark.clements@ki.se> 2021-05-07
