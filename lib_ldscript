@@ -6,9 +6,6 @@
 
 # depends on: whereis, sed, file, basename
 
-# BSD licence
-# Mark Clements <mark.clements@ki.se> 2021-05-07
-
 shortname () {
     echo -n $(basename $1 | sed -n 's/^lib\(.*\)[.][aso]/\1/p')' '
 }
