@@ -5,9 +5,9 @@
 
 * Introduction
 
-[[https://souffle-lang.github.io/index.html][Souffle]] is a capable Datalog implementation which allows for easy integration with C functions. This package defines a set of functors for using some of the C math functions in Souffle. As a simple example, we have the following Souffle test file:
+[[https://souffle-lang.github.io/index.html][Souffle]] is a capable Datalog implementation which allows for easy integration with C functions. This package defines a set of functors for using some of the C math functions in Souffle. As a simple example, we have the following Souffle [[https://github.com/mclements/souffle-math/blob/main/test.dl][test.dl]] file:
 
-#+BEGIN_SRC shell :exports both :results verbatim
+#+BEGIN_SRC shell :exports results :results verbatim
   cat test.dl
 #+END_SRC
 
@@ -19,7 +19,7 @@
 : Summary("@log(@exp(1.0))", @log(@exp(1.0))) :- true.
 : .output Summary
 
-This reads in the functor definitions, declares a Summary relationship, and calculates two values. The code to run this in the interpreter may be as simple as =souffle -lm test.dl= or in the compiler using =souffle -c -lm test.dl=. When =libm= is an ld script, this code will not work for the Souffle interpreter. We provide a bash script =lib_ldscript= for transforming the library arguments when there are ld scripts. As an example:
+This reads in the functor definitions, declares a Summary relationship, and calculates two values. The code to run this in the interpreter may be as simple as =souffle -lm test.dl= or in the compiler using =souffle -c -lm test.dl=. When =libm= is an ld script, this code will not work for the Souffle interpreter. We provide a bash script =lib_ldscript= for transforming the library arguments when there is an ld script. As an example:
 
 #+BEGIN_SRC shell :exports both
   souffle `lib_ldscript -lm` test.dl
