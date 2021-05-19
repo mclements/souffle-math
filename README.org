@@ -3,6 +3,8 @@
 
 #+options: toc:nil html-postamble:nil num:nil
 
+*NOTE: Development of these functions has been moved to [[https://github.com/souffle-lang/souffle-lib][souffle-lib]].*
+
 * Introduction
 
 [[https://souffle-lang.github.io/index.html][Souffle]] is a capable Datalog implementation which allows for easy integration with C functions. This package defines a set of functors for using some of the C math functions in Souffle (assuming double precision, with =./configure --enable-64bit-domain=).
