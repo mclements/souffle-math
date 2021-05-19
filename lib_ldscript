@@ -32,7 +32,7 @@ processArg () {
 	    fi
 	fi
     fi
-    # if fails somewhere then return the origin input
+    # if fails somewhere then return the original input
     echo -n $1' '
 }
 args=$*
