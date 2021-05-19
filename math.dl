@@ -1,7 +1,0 @@
-#if 32 == 32
-#include "math_32.dl"
-#endif
-
-#if 32 == 64
-#include "math_64.dl"
-#endif
